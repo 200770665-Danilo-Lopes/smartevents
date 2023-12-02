@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Agências</title>
+	<link rel="stylesheet" href="bootstrap.min.css">
+	<link rel="stylesheet" href="styles.css">
+   <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+</head>
+<style>
+
+nav {
+  background-color: #333;
+ 
+}
+
+
+.navbar {
+  overflow: hidden;
+  background-color: #333;
+  position: fixed; /* Set the navbar to fixed position */
+  top: 0; /* Position the navbar at the top of the page */
+  width: 100%; /* Full width */
+  
+}
+
+.menu {
+  list-style: none;
+  padding: 0;
+}
+
+.menu li {
+  display: inline-block;
+  position: relative;
+}
+
+.menu a {
+  display: block;
+  padding: 15px 20px;
+  text-decoration: none;
+  color: #fff;
+}
+
+.menu li:hover {
+  background-color: #555;
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  background-color: #333;
+}
+
+.dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+.dropdown-menu li {
+  display: block;
+}
+
+.dropdown-menu a {
+  padding: 10px 20px;
+}
+
+.dropdown-menu li:hover {
+  background-color: #555;
+}
+   
+
+</style>
+<nav >
+    <ul class="menu">
+
+
+        <li><a href="/">Home</a></li>
+
+
+        <li class="dropdown">
+            <a href="#">Cadastros</a>
+            <ul class="dropdown-menu">
+                <li><a href="/cadastro-agencia">Agencias</a></li>
+                <li><a href="/cadastro-membro">Membros</a></li>
+                <li><a href="/cadastro-evento">Eventos</a></li>
+            </ul>
+        </li>
+
+        <li class="dropdown"><a href="#">Consultas</a>
+            <ul class="dropdown-menu">
+                  <li><a href="/consulta-agencia">Agencias</a></li>
+                  <li><a href="/consulta-membro">Membros</a></li>
+                  <li><a href="/consulta-evento">Eventos</a></li>
+            </ul>
+        </li>
+
+
+
+        <li class="dropdown"><a href="#">Agendamentos</a>
+            <ul class="dropdown-menu">
+                <li><a href="/cadastro-agendamento">Solicitação de Agendamento</a></li>
+                <li><a href="/consulta-agendamento">Ver Agendamentos</a></li>
+            </ul>
+        </li>
+
+		<script> 
+		var usuario = localStorage.getItem("usuario");
+		console.log(usuario);
+		</script>
+
+        <li><a href="/login">Sair</a></li>
+    </ul>
+</nav>
+
+<body>
+
+	<h2>Lista de Agências</h2>
+
+	<table onload="GetImage()" class="table table-striped" id="agenciaTable">
+		<thead class="thead-dark">
+			<tr>
+				<th>ID</th>
+				<th>Tipo da Agência</th>
+				<th>CNPJ</th>
+				<th>Razão Social</th>
+				<th>Nome Fantasia</th>
+				<th>Email</th>
+				<th>WhatsApp</th>
+				<th>Telefone</th>
+				<th>Ações</th>
+
+			</tr>
+		</thead>
+		<tbody>
+			<!-- A tabela será preenchida dinamicamente usando JavaScript -->
+		</tbody>
+	</table>
+
+	<script >
+
+		// URL da API JSONPlaceholder para obter a lista de usuários
+		const apiUrl = 'http://localhost:8092/agencias';
+
+		// Elemento TABLE onde a tabela será exibida
+		const table = document.getElementById('agenciaTable').getElementsByTagName('tbody')[0];
+
+
+
+
+		// Fetch API para obter a lista de usuários
+		fetch(apiUrl)
+			.then(response => response.json())
+			.then(users => {
+				// Para cada usuário na lista, criar uma nova linha na tabela
+				users.forEach(user => {
+					const row = table.insertRow();
+					const cell1 = row.insertCell(0);
+					const cell2 = row.insertCell(1);
+					const cell3 = row.insertCell(2);
+					const cell4 = row.insertCell(3);
+					const cell5 = row.insertCell(4);
+					const cell6 = row.insertCell(5);
+					const cell7 = row.insertCell(6);
+					const cell8 = row.insertCell(7);
+					var cell9 = row.insertCell(8);
+					//var cell10 = row.insertCell(9);
+					// Preencher as células com os dados do usuário
+					cell1.textContent = user.idAgencia;
+					cell2.textContent = user.tipo;
+					cell3.textContent = user.cnpj;
+					cell4.textContent = user.nomeRegistro;
+					cell5.textContent = user.nomeFantasia;
+					cell6.textContent = user.email;
+					cell7.textContent = user.whatsApp;
+					cell8.textContent = user.telefone;
+					
+					cell2.id=`tipo${user.idAgencia}`;	
+					cell3.id=`cnpj${user.idAgencia}`;	
+					cell4.id=`nomeRegistro${user.idAgencia}`;	
+					cell5.id=`nomeFantasia${user.idAgencia}`;	
+					cell6.id=`email${user.idAgencia}`;	
+					cell7.id=`whatsApp${user.idAgencia}`;	
+					cell8.id=`telefone${user.idAgencia}`;				
+				
+				
+				
+					
+				    // ####### INICIO BOTÃO EXCLUIR
+
+					// CRIAR O BOTAO EXCLUIR
+					var botaoExcluir = document.createElement('input');
+					botaoExcluir.type = "submit";
+					botaoExcluir.value = "Excluir";
+					botaoExcluir.className = "btn btn-outline-danger";
+					// botaoExcluir.textContent = 'Excluir';
+
+					botaoExcluir.addEventListener('click', function () {
+
+
+						var id = user.idAgencia;
+						//alert('ID: ' + id);
+
+						var confirmacao = confirm("Tem certeza de que deseja excluir este registro?");
+
+						if (confirmacao) {
+							// Simular uma solicitação DELETE usando a Fetch API
+							fetch("http://localhost:8092/agencias/" + id, {
+								method: 'DELETE',
+								headers: {
+									'Content-Type': 'application/json',
+									// Adicione cabeçalhos de autenticação, se necessário
+									// 'Authorization': 'Bearer SeuToken'
+								}
+							})
+								.then(response => {
+									if (response.ok) {
+										// Remover a linha da tabela após a exclusão bem-sucedida
+										table.deleteRow(row.rowIndex - 1);
+									} else {
+										alert('Erro ao excluir o registro.');
+									}
+								})
+								.catch(error => {
+									console.error('Erro na solicitação DELETE:', error);
+
+								});
+						}
+					});
+
+					// Adicionar o botão à coluna de botões
+					cell9.appendChild(botaoExcluir);
+					
+				// ####### FIM BOTÃO EXCLUIR
+						
+				
+				
+				
+				//######## INICIO BOTAO ALTERAR	E SALVAR
+					//CRIAR O BOTAO ALTERAR
+					var botaoAlterar = document.createElement('input');
+					botaoAlterar.type = "submit";
+					botaoAlterar.value = "Alterar";
+					botaoAlterar.className = "btn btn-outline-primary";
+					botaoAlterar.id="botaoAlterar";
+					//botaoAlterar.textContent = 'Alterar';
+
+
+					botaoAlterar.addEventListener('click', function () {
+						// contentEditable alert('ID: ' + id);
+						
+							  cell3.contentEditable=true;
+						      cell3.style.backgroundColor = "#FFFFCC";
+						      cell4.contentEditable=true;
+						      cell4.style.backgroundColor = "#FFFFCC";
+						      cell5.contentEditable=true;
+						      cell5.style.backgroundColor = "#FFFFCC";
+						      cell6.contentEditable=true;
+						      cell6.style.backgroundColor = "#FFFFCC";
+						      cell7.contentEditable=true;
+						      cell7.style.backgroundColor = "#FFFFCC";
+						      cell8.contentEditable=true;
+						      cell8.style.backgroundColor = "#FFFFCC";
+						      botaoAlterar.value = "Salvar";
+      					      botaoAlterar.className = "btn btn-outline-primary btn-outline-success";
+      					      console.log("log");
+      					      
+      					      botaoAlterar.onclick = function () {
+          								  saveForm(botaoAlterar);
+      								  };
+      			
+					});
+
+					// Adicionar o botão à coluna de botões
+					cell9.appendChild(botaoAlterar);
+
+			 //#################### FUNÇAO SALVAR#################################		
+				function saveForm(botaoAlterar){  
+										
+								
+						 //SALVAR DADOS 
+						 const cnpj          = document.getElementById("cnpj"+user.idAgencia).textContent
+						 const nomeRegistro  = document.getElementById("nomeRegistro"+user.idAgencia).textContent
+						 const nomeFantasia  = document.getElementById("nomeFantasia"+user.idAgencia).textContent
+						 const email         = document.getElementById("email"+user.idAgencia).textContent
+						 const whatsApp      = document.getElementById("whatsApp"+user.idAgencia).textContent
+						 const telefone      = document.getElementById("telefone"+user.idAgencia).textContent
+						 const tipoTexto     = document.getElementById("tipo"+user.idAgencia).textContent
+					     
+					       var tipo;
+				          if(tipoTexto=="EVENTOS"){
+							tipo='1';
+				           }else{
+							tipo='2';
+							}
+						   
+					       
+
+						    var formAlterAgencia = {
+						            tipo: tipo,
+						            cnpj,
+						            nomeRegistro,
+						            nomeFantasia,
+						            email,
+						            whatsApp,
+						            telefone
+						        };
+						    var id = user.idAgencia;
+						    fetch("http://localhost:8092/agencias/"+id, {
+				            method: 'PUT',
+				              headers: {
+				                'Content-Type': 'application/json'
+				            },
+				             body: JSON.stringify(formAlterAgencia)
+				          
+				        })
+				        .then(response => {
+				            // Handle the server response
+				            if (response.status === 200) {
+				                // Successful submission
+				                console.log('Form submitted successfully');
+				                 alert("Alteração realizada com sucesso");
+				                location.reload();
+				            } else {
+				                // Handle the error
+				                console.error('Form submission failed');
+				                alert("Erro ao salvar");
+				            }
+				        })
+				        .catch(error => {
+				            console.error('Error:', error);
+				        });
+								
+				}
+							
+			//####################  FIM DA FUNÇAO SALVAR#################################						
+				
+					
+					
+					
+					
+					
+					
+
+
+				});
+
+			})
+			.catch(error => {
+				console.error('Erro ao buscar dados da API:', error);
+			});
+
+
+	</script>
+
+</body>
+
+</html>

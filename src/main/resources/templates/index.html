@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>SMARTEVENTS</title>
+    
+</head>
+<body>
+<style>
+ .container {
+	 top:80 ;
+      width: 80%;
+      color:black;
+      margin: 0 auto;
+      padding: 20px;
+    
+      background-color: rgba(255, 255, 255, 0.8); /* Example: Semi-transparent white background */
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Example: Box shadow for container */
+      
+    }
+      body {
+      margin: 0;
+      padding: 0;
+      background-image: url('https://tinyurl.com/mr4bazk4');
+      background-size: cover; /* This will cover the entire background */
+     
+      color: #ffffff; /* Set text color to be visible on the background */
+      
+    }
+
+nav {
+  background-color: #333;
+ 
+}
+
+
+.navbar {
+  overflow: hidden;
+  background-color: #333;
+  position: fixed; /* Set the navbar to fixed position */
+  top: 0; /* Position the navbar at the top of the page */
+  width: 100%; /* Full width */
+  
+}
+
+.menu {
+  list-style: none;
+  padding: 0;
+}
+
+.menu li {
+  display: inline-block;
+  position: relative;
+}
+
+.menu a {
+  display: block;
+  padding: 15px 20px;
+  text-decoration: none;
+  color: #fff;
+}
+
+.menu li:hover {
+  background-color: #555;
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  background-color: #333;
+}
+
+.dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+.dropdown-menu li {
+  display: block;
+}
+
+.dropdown-menu a {
+  padding: 10px 20px;
+}
+
+.dropdown-menu li:hover {
+  background-color: #555;
+}
+
+
+
+
+       
+
+</style>
+<nav >
+    <ul class="menu">
+
+
+        <li><a href="/">Home</a></li>
+
+
+        <li class="dropdown">
+            <a href="#">Cadastros</a>
+            <ul class="dropdown-menu">
+                <li><a href="/cadastro-agencia">Agencias</a></li>
+                <li><a href="/cadastro-membro">Membros</a></li>
+                <li><a href="/cadastro-evento">Eventos</a></li>
+            </ul>
+        </li>
+
+        <li class="dropdown"><a href="#">Consultas</a>
+            <ul class="dropdown-menu">
+                  <li><a href="/consulta-agencia">Agencias</a></li>
+                  <li><a href="/consulta-membro">Membros</a></li>
+                  <li><a href="/consulta-evento">Eventos</a></li>
+            </ul>
+        </li>
+
+
+
+        <li class="dropdown"><a href="#">Agendamentos</a>
+            <ul class="dropdown-menu">
+                <li><a href="/cadastro-agendamento">Solicitação de Agendamento</a></li>
+                <li><a href="/consulta-agendamento">Ver Agendamentos</a></li>
+            </ul>
+        </li>
+
+		<script> 
+		var usuario = localStorage.getItem("usuario");
+		console.log(usuario);
+		</script>
+
+        <li><a href="/login">Sair</a></li>
+    </ul>
+</nav>
+
+</body>
+</html>

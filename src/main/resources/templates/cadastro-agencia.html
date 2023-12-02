@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+    <title>Cadastro de Agencia</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="bootstrap.min.css">
+
+</head>
+<body>
+<style>
+
+
+ .titulo {
+      width: 80%;
+      margin: 0 auto;
+     text-align: center;
+      padding: 20px;
+      color:black;
+      background-color: rgba(255, 255, 255, 0.8); /* Example: Semi-transparent white background */
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Example: Box shadow for container */
+      
+    }
+ .container {
+	 top:80 ;
+      width: 80%;
+      color:black;
+      margin: 0 auto;
+      padding: 20px;
+    
+      background-color: rgba(255, 255, 255, 0.8); /* Example: Semi-transparent white background */
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Example: Box shadow for container */
+      
+    }
+      body {
+      margin: 0;
+      padding: 0;
+      background-image: url('https://tinyurl.com/4pz9xff6');
+      background-size: cover; /* This will cover the entire background */
+      background-position: center; /* Center the background image */
+      font-family: 'Arial', sans-serif;
+      color: #ffffff; /* Set text color to be visible on the background */
+      
+    }
+
+nav {
+  background-color: #333;
+ 
+}
+
+
+.navbar {
+  overflow: hidden;
+  background-color: #333;
+  position: fixed; /* Set the navbar to fixed position */
+  top: 0; /* Position the navbar at the top of the page */
+  width: 100%; /* Full width */
+  
+}
+
+.menu {
+  list-style: none;
+  padding: 0;
+}
+
+.menu li {
+  display: inline-block;
+  position: relative;
+}
+
+.menu a {
+  display: block;
+  padding: 15px 20px;
+  text-decoration: none;
+  color: #fff;
+}
+
+.menu li:hover {
+  background-color: #555;
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  background-color: #333;
+}
+
+.dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+.dropdown-menu li {
+  display: block;
+}
+
+.dropdown-menu a {
+  padding: 10px 20px;
+}
+
+.dropdown-menu li:hover {
+  background-color: #555;
+}
+   
+
+</style>
+<nav  >
+    <ul class="menu">
+
+
+        <li><a href="/">Home</a></li>
+
+
+        <li class="dropdown">
+            <a href="#">Cadastros</a>
+            <ul class="dropdown-menu">
+                <li><a href="/cadastro-agencia">Agencias</a></li>
+                <li><a href="/cadastro-membro">Membros</a></li>
+                <li><a href="/cadastro-evento">Eventos</a></li>
+            </ul>
+        </li>
+
+        <li class="dropdown"><a href="#">Consultas</a>
+            <ul class="dropdown-menu">
+                  <li><a href="/consulta-agencia">Agencias</a></li>
+                  <li><a href="/consulta-membro">Membros</a></li>
+                  <li><a href="/consulta-evento">Eventos</a></li>
+            </ul>
+        </li>
+
+
+
+        <li class="dropdown"><a href="#">Agendamentos</a>
+            <ul class="dropdown-menu">
+                <li><a href="/cadastro-agendamento">Solicitação de Agendamento</a></li>
+                <li><a href="/consulta-agendamento">Ver Agendamentos</a></li>
+            </ul>
+        </li>
+
+		<script> 
+		var usuario = localStorage.getItem("usuario");
+		console.log(usuario);
+		</script>
+
+        <li><a href="/login">Sair</a></li>
+    </ul>
+</nav>  
+
+<h1 class="titulo">Cadastro de Agência</h1>
+<form class="container" id="CadastroAgencia">
+		
+    	
+    	 <label for="tipo">Tipo da Agência:</label>
+		  <select class="form-control form-control-sm"  id="tipo">
+		  <option disabled hidden selected>Selecionar o Tipo da Agência</option>
+		  <option value="1">Eventos</option>
+		  <option value="2">Música</option>
+		 </select><br>
+
+
+    <label for="cnpj">CNPJ:</label>
+    <input type="text" class="form-control form-control-sm"  id="cnpj" placeholder="Informe 14 números" minlength="14" maxlength="14"  name="cnpj" required><br>
+
+    <label for="nomeRegistro">Nome Registro:</label>
+    <input type="text" class="form-control form-control-sm" id="nomeRegistro" name="nomeRegistro" required><br>
+
+    <label for="nomeFantasia">Nome Fantasia:</label>
+    <input type="text" class="form-control form-control-sm" id="nomeFantasia" name="nomeFantasia" required><br>
+
+    <label for="email">E-mail:</label>
+    <input type="email" class="form-control form-control-sm"  id="email" name="email" required><br>
+
+
+    <label for="whatsApp">WhatsApp:</label>
+    <input type="text" class="form-control form-control-sm"  id="whatsApp" name="whatsApp" required><br>
+
+    <label for="telefone">Telefone:</label>
+    <input type="text" class="form-control form-control-sm"  id="telefone" name="telefone" required><br>
+
+    <input  onclick="validateForm()"  class="btn btn-dark" type="submit" value="Cadastrar">
+    
+
+<script>
+		var usuario = localStorage.getItem("usuario");
+		console.log(usuario);
+	 document.getElementById('CadastroAgencia').addEventListener('submit', function (e) {
+        e.preventDefault(); // Prevent the default form submission
+		
+        // Get the form data
+        var tipo = document.getElementById('tipo').value;
+        var cnpj = document.getElementById('cnpj').value;
+        var nomeRegistro = document.getElementById('nomeRegistro').value;
+        var nomeFantasia = document.getElementById('nomeFantasia').value;
+        var email = document.getElementById('email').value;
+        var whatsApp = document.getElementById('whatsApp').value;
+        var telefone = document.getElementById('telefone').value;
+
+        // You can perform validation here before sending the data
+
+        // Create an object to store the form data
+      
+        var formCadAgencia = {
+            tipo: tipo,
+            cnpj: cnpj.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, '$1.$2.$3/$4-$5'),
+            nomeRegistro: nomeRegistro,
+            nomeFantasia: nomeFantasia,
+            email: email,
+            whatsApp: whatsApp,
+            telefone :telefone
+        };
+
+        // You can send the data to a server using AJAX or fetch
+        // For example, using the fetch API:
+        fetch('http://localhost:8092/agencias', {
+            method: 'POST',
+            body: JSON.stringify(formCadAgencia),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+            
+        })
+        .then(response => {
+            // Handle the server response
+            if (response.status === 201) {
+                // Successful submission
+                console.log('Form submitted successfully');
+                document.getElementById("CadastroAgencia").reset();
+                alert("Cadastro realizado com sucesso");
+            } else {
+                // Handle the error
+                console.error('Form submission failed');
+                alert("Atenção: Informe o Tipo de Agência");
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+          
+    });
+    
+    function validateForm(){
+ 	 const isValid = CadastroAgencia.checkValidity();
+  	if(!isValid){
+    alert("Por favor, verificar todos os campos");
+  }
+  return isValid;
+}
+    
+  
+</script>
+</body>
+</html>

@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eventos</title>
+    <link rel="stylesheet" href="bootstrap.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    
+</head>
+
+
+<body>
+<style>
+
+nav {
+  background-color: #333;
+ 
+}
+
+
+.navbar {
+  overflow: hidden;
+  background-color: #333;
+  position: fixed; /* Set the navbar to fixed position */
+  top: 0; /* Position the navbar at the top of the page */
+  width: 100%; /* Full width */
+  
+}
+
+.menu {
+  list-style: none;
+  padding: 0;
+}
+
+.menu li {
+  display: inline-block;
+  position: relative;
+}
+
+.menu a {
+  display: block;
+  padding: 15px 20px;
+  text-decoration: none;
+  color: #fff;
+}
+
+.menu li:hover {
+  background-color: #555;
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  background-color: #333;
+}
+
+.dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+.dropdown-menu li {
+  display: block;
+}
+
+.dropdown-menu a {
+  padding: 10px 20px;
+}
+
+.dropdown-menu li:hover {
+  background-color: #555;
+}
+   
+
+</style>
+<nav >
+    <ul class="menu">
+
+
+        <li><a href="/">Home</a></li>
+
+
+        <li class="dropdown">
+            <a href="#">Cadastros</a>
+            <ul class="dropdown-menu">
+                <li><a href="/cadastro-agencia">Agencias</a></li>
+                <li><a href="/cadastro-membro">Membros</a></li>
+                <li><a href="/cadastro-evento">Eventos</a></li>
+            </ul>
+        </li>
+
+        <li class="dropdown"><a href="#">Consultas</a>
+            <ul class="dropdown-menu">
+                  <li><a href="/consulta-agencia">Agencias</a></li>
+                  <li><a href="/consulta-membro">Membros</a></li>
+                  <li><a href="/consulta-evento">Eventos</a></li>
+            </ul>
+        </li>
+
+
+
+        <li class="dropdown"><a href="#">Agendamentos</a>
+            <ul class="dropdown-menu">
+                <li><a href="/cadastro-agendamento">Solicitação de Agendamento</a></li>
+                <li><a href="/consulta-agendamento">Ver Agendamentos</a></li>
+            </ul>
+        </li>
+
+		<script> 
+		var usuario = localStorage.getItem("usuario");
+		console.log(usuario);
+		</script>
+
+        <li><a href="/login">Sair</a></li>
+    </ul>
+</nav>
+<h2>Lista de Eventos</h2>
+<style>
+.grid-container{
+display: flex;
+flex-direction: row;
+flex-wrap: wrap;
+justify-content: space-between;
+
+}
+
+</style>
+<table class="table table-striped" id="eventoTable">
+    <thead class="thead-dark">
+        <tr>
+            <th>ID</th>
+            <th>Nome do Evento</th>
+            <th>Data Inicial</th>
+            <th>Data Final</th>
+            <th>Capacidade</th>
+            <th>Agência do Evento</th>
+            <th>Responsável pelo Evento</th>
+            <th>Detalhes</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- A tabela será preenchida dinamicamente usando JavaScript -->
+    </tbody>
+</table>
+
+
+  <div id="id01" class="w3-modal">
+    <div class="w3-modal-content">
+      <header class="w3-container w3-teal"> 
+        <span onclick="document.getElementById('id01').style.display='none'" 
+        class="w3-button w3-display-topright">&times;</span>
+        <h2 id="tituloModel"> </h2>
+      </header>
+      
+      <div id="itemList" class="w3-container grid-container "  >
+	   
+      </div>
+      <footer class="w3-container w3-teal">
+        <p>Atrações confirmadas</p>
+      </footer>
+    </div>
+  </div>
+
+<script>
+    // URL da API JSONPlaceholder para obter a lista de usuários
+    const apiUrl = 'http://localhost:8092/eventos';
+
+    // Elemento TABLE onde a tabela será exibida
+    const table = document.getElementById('eventoTable').getElementsByTagName('tbody')[0];
+
+    // Fetch API para obter a lista de usuários
+    fetch(apiUrl)
+        .then(response => response.json())
+        .then(users => {
+            // Para cada usuário na lista, criar uma nova linha na tabela
+            users.forEach(user => {
+                const row = table.insertRow();
+                const cell1 = row.insertCell(0);
+                const cell2 = row.insertCell(1);
+                const cell3 = row.insertCell(2);
+                const cell4 = row.insertCell(3);
+                const cell5 = row.insertCell(4);
+                const cell6 = row.insertCell(5);
+                const cell7 = row.insertCell(6);
+                  var cell8 = row.insertCell(7);
+                  var cell9 = row.insertCell(8);
+                // Preencher as células com os dados do usuário
+                cell1.textContent = user.idEvento;
+                cell2.textContent = user.nomeEvento;
+                cell3.textContent = user.dataInicial;
+                cell4.textContent = user.dataFinal;
+                cell5.textContent = user.capacidade;
+                cell6.textContent = user.agenciaModel;
+                cell7.textContent = user.membroModel;
+                
+                
+                
+                 
+                   // ####### INICIO BOTÃO DETALHES
+
+					// CRIAR O BOTAO EXCLUIR
+					var botaoDetalhes = document.createElement('input');
+					botaoDetalhes.type = "submit";
+					botaoDetalhes.value = "Detalhes Eventos";
+					botaoDetalhes.className = "btn btn-outline-info";
+					
+					botaoDetalhes.addEventListener('click', function () {
+						var id = user.idEvento;
+				
+          				document.getElementById('id01').style.display='block';
+          					
+          							 // URL da API JSONPlaceholder para obter a lista de usuários
+  							   const apiUrl = 'http://localhost:8092/eventos';
+
+   							 // Elemento UL onde a lista será exibida
+							    const ul = document.getElementById('itemList');
+							
+							    // Fetch API para obter a lista de usuários
+							    fetch("/eventos/"+id)
+							        .then(response => response.json())
+							        .then(user => {
+							            // Para cada usuário na lista, criar um elemento LI e adicionar ao UL
+							           
+							              
+							                user.agendamentoModel.forEach(agendamento=>{
+								
+								           if(agendamento.confirmacao){
+										    const p  = document.createElement('p');
+										    const div  = document.createElement('div');
+							                const img = document.createElement('img');
+							                const tituloModel =  document.getElementById('tituloModel')
+							                div.style.width ="200px";
+							                div.style.heigth="200px";
+							                img.style.marginBottom="10px";
+							                img.style.width ="200px";
+							                img.style.heigth="200px";
+							                img.src=agendamento.imageSolicitadoMusica;
+							                tituloModel.textContent=`${agendamento.evento}`;
+							               
+							                p.textContent = `${agendamento.solicitadoMusica}`;
+							                
+							                ul.appendChild(div);
+							                div.appendChild(p);
+							                div.appendChild(img);
+							                }
+											
+							})
+							                
+							                
+							               
+							        
+							        })
+							        .catch(error => {
+							            console.error('Erro ao buscar dados da API:', error);
+							        });
+						
+						
+
+      								  
+			 });
+					// Adicionar o botão à coluna de botões
+					cell8.appendChild(botaoDetalhes);
+					
+				// ####### FIM BOTÃO DETALHES
+                
+                
+                
+                
+                
+                
+                   // ####### INICIO BOTÃO EXCLUIR
+
+					// CRIAR O BOTAO EXCLUIR
+					var botaoExcluir = document.createElement('input');
+					botaoExcluir.type = "submit";
+					botaoExcluir.value = "Excluir";
+					botaoExcluir.className = "btn btn-outline-danger";
+					// botaoExcluir.textContent = 'Excluir';
+
+					botaoExcluir.addEventListener('click', function () {
+
+
+						var id = user.idEvento;
+						//alert('ID: ' + id);
+
+						var confirmacao = confirm("Tem certeza de que deseja excluir este registro?");
+
+						if (confirmacao) {
+							// Simular uma solicitação DELETE usando a Fetch API
+							fetch("/eventos/" + id, {
+								method: 'DELETE',
+								headers: {
+									'Content-Type': 'application/json',
+									// Adicione cabeçalhos de autenticação, se necessário
+									// 'Authorization': 'Bearer SeuToken'
+								}
+							})
+								.then(response => {
+									if (response.ok) {
+										// Remover a linha da tabela após a exclusão bem-sucedida
+										table.deleteRow(row.rowIndex - 1);
+										alert('Registro excluido com sucesso');
+									} else {
+										alert('Erro ao excluir o registro. Evento já possui Agendamentos');
+									}
+								})
+								.catch(error => {
+									console.error('Erro na solicitação DELETE:', error);
+
+								});
+						}
+					});
+
+					// Adicionar o botão à coluna de botões
+					cell9.appendChild(botaoExcluir);
+					
+				// ####### FIM BOTÃO EXCLUIR
+                
+                
+               
+                
+                
+                
+                
+                
+                
+            });
+        })
+        .catch(error => {
+            console.error('Erro ao buscar dados da API:', error);
+        });
+</script>
+
+</body>
+</html>

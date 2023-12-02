@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agendamentos</title>
+    <link rel="stylesheet" href="bootstrap.min.css">
+</head>
+<body>
+<style>
+
+nav {
+  background-color: #333;
+ 
+}
+
+
+.navbar {
+  overflow: hidden;
+  background-color: #333;
+  position: fixed; /* Set the navbar to fixed position */
+  top: 0; /* Position the navbar at the top of the page */
+  width: 100%; /* Full width */
+  
+}
+
+.menu {
+  list-style: none;
+  padding: 0;
+}
+
+.menu li {
+  display: inline-block;
+  position: relative;
+}
+
+.menu a {
+  display: block;
+  padding: 15px 20px;
+  text-decoration: none;
+  color: #fff;
+}
+
+.menu li:hover {
+  background-color: #555;
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  background-color: #333;
+}
+
+.dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+.dropdown-menu li {
+  display: block;
+}
+
+.dropdown-menu a {
+  padding: 10px 20px;
+}
+
+.dropdown-menu li:hover {
+  background-color: #555;
+}
+   
+
+</style>
+<nav >
+    <ul class="menu">
+
+
+        <li><a href="/">Home</a></li>
+
+
+        <li class="dropdown">
+            <a href="#">Cadastros</a>
+            <ul class="dropdown-menu">
+                <li><a href="/cadastro-agencia">Agencias</a></li>
+                <li><a href="/cadastro-membro">Membros</a></li>
+                <li><a href="/cadastro-evento">Eventos</a></li>
+            </ul>
+        </li>
+
+        <li class="dropdown"><a href="#">Consultas</a>
+            <ul class="dropdown-menu">
+                  <li><a href="/consulta-agencia">Agencias</a></li>
+                  <li><a href="/consulta-membro">Membros</a></li>
+                  <li><a href="/consulta-evento">Eventos</a></li>
+            </ul>
+        </li>
+
+
+
+        <li class="dropdown"><a href="#">Agendamentos</a>
+            <ul class="dropdown-menu">
+                <li><a href="/cadastro-agendamento">Solicitação de Agendamento</a></li>
+                <li><a href="/consulta-agendamento">Ver Agendamentos</a></li>
+            </ul>
+        </li>
+
+		<script> 
+		var usuario = localStorage.getItem("usuario");
+		console.log(usuario);
+		</script>
+
+        <li><a href="/login">Sair</a></li>
+    </ul>
+</nav>
+<h2>Agendamentos</h2>
+
+<table  class="table table-striped" id="agendamentoTable">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Agencia Eventos</th>
+            <th>Solicitante</th>
+            <th>Produtor Musical</th>
+            <th>Evento</th>
+            <th>Data Agendamento</th>
+            <th>Confirmado?</th>
+            <th>Aprovar</th>
+        </tr>
+      
+	    </thead>
+	    <tbody>
+        <!-- A tabela será preenchida dinamicamente usando JavaScript -->
+    </tbody>
+</table>
+
+<script>
+    // URL da API JSONPlaceholder para obter a lista de usuários
+    const apiUrl = 'http://localhost:8092/agendamentos';
+
+    // Elemento TABLE onde a tabela será exibida
+    const table  = document.getElementById('agendamentoTable').getElementsByTagName('tbody')[0];
+    
+
+    // Fetch API para obter a lista de usuários
+    fetch(apiUrl)
+        .then(response => response.json())
+        .then(users => {
+            // Para cada usuário na lista, criar uma nova linha na tabela
+            users.forEach(user => {
+                const row = table.insertRow();
+                const cell1 = row.insertCell(0);
+                const cell2 = row.insertCell(1);
+                const cell3 = row.insertCell(2);
+                const cell4 = row.insertCell(3);
+                const cell5 = row.insertCell(4);
+                const cell6 = row.insertCell(5);
+                const cell7 = row.insertCell(6);
+                  var cell8 = row.insertCell(7);
+                  
+              
+                // Preencher as células com os dados do usuário
+                cell1.textContent = user.idAgendamento;
+                cell2.textContent = user.agenciaEventos;
+                cell3.textContent = user.solicitanteEventos;
+                cell4.textContent = user.solicitadoMusica;
+                cell5.textContent = user.evento;
+                cell6.textContent = user.dataAgendamento;
+                cell7.textContent = user.confirmacao;
+               
+               
+                 cell2.id=`agenciaEventos${user.idAgendamento}`;	
+                 cell3.id=`solicitanteEventos${user.idAgendamento}`;	
+                 cell4.id=`solicitadoMusica${user.idAgendamento}`;	
+                 cell5.id=`evento${user.idAgendamento}`;
+                 cell6.id=`dataAgendamento${user.idAgendamento}`;		
+                 cell7.id=`confirmacao${user.idAgendamento}`;	
+               
+               
+               	//CRIAR O BOTAO ALTERAR
+					var botaoAprovar = document.createElement('input');
+					botaoAprovar.type = "submit";
+					botaoAprovar.value = "Aprovar";
+					botaoAprovar.className = "btn btn-outline-success";
+					botaoAprovar.id="botaoAprovar";
+					
+				const confirmacaoLinha      = document.getElementById("confirmacao"+user.idAgendamento).textContent
+					
+				botaoAprovar.addEventListener('click', function () {
+							
+					
+								
+						var confirmacao = confirm("Tem certeza de que deseja aprovar este registro?");
+						
+						if (confirmacao) {
+                
+			 //#################### FUNÇAO SALVAR#################################		
+			 
+										
+								
+						 //SALVAR DADOS 
+						 const agenciaEventos       = user.idAgenciaEventos
+						 const solicitanteEventos   = user.idSolicitanteEventos
+						 const solicitadoMusica     = user.idSolicitadoMusica
+						 const evento               = user.idEvento
+						 const dataAgendamento      = user.dataAgendamento
+						 const confirmacao          = true
+						 
+				
+						    var formAlterAgendamento = {
+									agenciaEventos     :  { idAgencia:agenciaEventos},
+						            solicitanteEventos :  {	idMembro:solicitanteEventos },
+						            solicitadoMusica   :  {	idMembro:solicitadoMusica },
+						            evento             : {  idEvento:evento },  
+						            dataAgendamento    : dataAgendamento,
+						            confirmacao : confirmacao
+						            
+						        };
+						    var id = user.idAgendamento;
+						    fetch("http://localhost:8092/agendamentos/"+id, {
+				            method: 'PUT',
+				              headers: {
+				                'Content-Type': 'application/json'
+				            },
+				             body: JSON.stringify(formAlterAgendamento)
+				          
+				        })
+				        .then(response => {
+				            // Handle the server response
+				            if (response.status === 200) {
+				                // Successful submission
+				                console.log('Form submitted successfully');
+				                 alert("Agendamento Aprovado");
+				                location.reload();
+				            } else {
+				                // Handle the error
+				                console.error('Form submission failed');
+				                alert("Erro ao salvar");
+				            }
+				        })
+				        .catch(error => {
+				            console.error('Error:', error);
+				        });
+								
+				
+					
+					}
+							
+					});	
+					
+					
+					cell8.appendChild(botaoAprovar);		
+			//####################  FIM DA FUNÇAO SALVAR#################################	
+                
+				
+    
+             
+                
+            });
+        })
+        .catch(error => {
+            console.error('Erro ao buscar dados da API:', error);
+        });
+        
+  
+        
+        
+        
+        
+        
+</script>
+
+</body>
+</html>

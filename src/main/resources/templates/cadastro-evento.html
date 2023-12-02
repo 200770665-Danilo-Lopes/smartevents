@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+    <title>Cadastro de Evento</title>
+    <link rel="stylesheet" href="bootstrap.min.css">
+    <link rel="stylesheet" href="styles.css">
+
+</head>
+<body>
+<style>
+
+ .titulo {
+      width: 80%;
+      margin: 0 auto;
+     text-align: center;
+      padding: 20px;
+      color:black;
+      background-color: rgba(255, 255, 255, 0.8); /* Example: Semi-transparent white background */
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Example: Box shadow for container */
+      
+    }
+ .container {
+      width: 80%;
+      color:black;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: rgba(255, 255, 255, 0.8); /* Example: Semi-transparent white background */
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Example: Box shadow for container */
+      
+    }
+      body {
+      margin: 0;
+      padding: 0;
+      background-image: url('https://tinyurl.com/mv95pmf8');
+      background-size: cover; /* This will cover the entire background */
+      background-position: center; /* Center the background image */
+      font-family: 'Arial', sans-serif;
+      color: #ffffff; /* Set text color to be visible on the background */
+      
+    }
+nav {
+  background-color: #333;
+ 
+}
+
+
+.navbar {
+  overflow: hidden;
+  background-color: #333;
+  position: fixed; /* Set the navbar to fixed position */
+  top: 0; /* Position the navbar at the top of the page */
+  width: 100%; /* Full width */
+  
+}
+
+.menu {
+  list-style: none;
+  padding: 0;
+}
+
+.menu li {
+  display: inline-block;
+  position: relative;
+}
+
+.menu a {
+  display: block;
+  padding: 15px 20px;
+  text-decoration: none;
+  color: #fff;
+}
+
+.menu li:hover {
+  background-color: #555;
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  background-color: #333;
+}
+
+.dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+.dropdown-menu li {
+  display: block;
+}
+
+.dropdown-menu a {
+  padding: 10px 20px;
+}
+
+.dropdown-menu li:hover {
+  background-color: #555;
+}
+   
+
+</style>
+<nav >
+    <ul class="menu">
+
+
+        <li><a href="/">Home</a></li>
+
+
+        <li class="dropdown">
+            <a href="#">Cadastros</a>
+            <ul class="dropdown-menu">
+                <li><a href="/cadastro-agencia">Agencias</a></li>
+                <li><a href="/cadastro-membro">Membros</a></li>
+                <li><a href="/cadastro-evento">Eventos</a></li>
+            </ul>
+        </li>
+
+        <li class="dropdown"><a href="#">Consultas</a>
+            <ul class="dropdown-menu">
+                  <li><a href="/consulta-agencia">Agencias</a></li>
+                  <li><a href="/consulta-membro">Membros</a></li>
+                  <li><a href="/consulta-evento">Eventos</a></li>
+            </ul>
+        </li>
+
+
+
+        <li class="dropdown"><a href="#">Agendamentos</a>
+            <ul class="dropdown-menu">
+                <li><a href="/cadastro-agendamento">Solicitação de Agendamento</a></li>
+                <li><a href="/consulta-agendamento">Ver Agendamentos</a></li>
+            </ul>
+        </li>
+
+		<script> 
+		var usuario = localStorage.getItem("usuario");
+		console.log(usuario);
+		</script>
+
+        <li><a href="/login">Sair</a></li>
+    </ul>
+</nav>
+  
+
+<h1 class="titulo">Cadastro de Evento</h1>
+<form class="container" id="CadastroEvento">
+
+
+    <label for="nomeEvento" class="form-label">Nome do Evento:</label>
+    <input type="text" id="nomeEvento" class="form-control form-control-sm" name="nomeEvento" required><br>
+
+    <label for="dataInicial" class="form-label"> Data Inicial:</label>
+    <input type="date"  class="form-control form-control-sm" id="dataInicial" name="dataInicial"    required><br>
+
+    <label for="dataFinal" class="form-label">Data Final:</label>
+    <input type="date" class="form-control form-control-sm" id="dataFinal" name="dataFinal"       required><br>
+
+    <label for="capacidade" class="form-label">Capacidade:</label>
+    <input type="number" class="form-control form-control-sm" id="capacidade" name="capacidade" required><br>
+
+	<label for="Agencia" class="form-label">Agencia:</label><br>
+
+    <select class="form-control form-control-sm" id="agenciaModel">
+    <option value=""  disable selected>selecione uma opçao</option>
+    </select><br>
+
+    <label for="Membro" class="form-label">Membro:</label><br>
+
+    <select class="form-control form-control-sm" id="membroModel">
+        <option value=""  disable selected>selecione uma opçao</option>
+    </select>
+   
+<script>
+	var usuario = localStorage.getItem("usuario");
+	console.log(usuario);
+ // URL da API JSONPlaceholder para obter a lista de usuários
+    const apiUrl = 'http://localhost:8092/agencias';
+
+    // Fetch API para obter a lista de usuários
+    fetch(apiUrl)
+        .then(response => response.json())
+        .then(users => {
+            	const     listaAgencia  = document.getElementById('agenciaModel');
+              
+                 
+            users.forEach(user => {
+               
+                 	console.log("console teste",user)
+                  const  option =document.createElement('option');
+                  option.value=user.idAgencia;
+                  option.text=user.nomeFantasia;
+                  listaAgencia.add(option,null)
+               
+            });
+        })
+        .catch(error => {
+            console.error('Erro ao buscar dados da API:', error);
+            
+       });
+
+
+ // URL da API JSONPlaceholder para obter a lista de usuários
+    const apiUrlMembros = 'http://localhost:8092/membros';
+
+  
+
+    // Fetch API para obter a lista de usuários
+    fetch(apiUrlMembros)
+        .then(response => response.json())
+        .then(users => {
+            	const     listaMembro  = document.getElementById('membroModel');
+
+
+            users.forEach(user => {
+                  const  option =document.createElement('option');
+                  option.value=user.idMembro;
+                  option.text=user.nome;
+                  listaMembro.add(option,null)
+
+            });
+        })
+        .catch(error => {
+            console.error('Erro ao buscar dados da API:', error);
+
+       });
+
+
+
+
+</script>
+
+    <br><br><input  onclick="validateForm()" class="btn btn-dark" type="submit" value="Cadastrar">
+ 
+    
+</form>
+<script>
+   	
+   	
+   	
+	  
+	 document.getElementById('CadastroEvento').addEventListener('submit', function (e) {
+        e.preventDefault(); // Prevent the default form submission
+		
+		
+		const originalDateIni = document.getElementById('dataInicial').value;
+
+        // Split the original date into an array [yyyy, mm, dd]
+        const partsIni = originalDateIni.split('-');
+
+        // Rearrange the array to [dd, mm, yyyy]
+        const rearrangedPartsIni = [partsIni[2], partsIni[1], partsIni[0]];
+
+        // Join the array into a string with "/" as separator
+        const formattedDateIni = rearrangedPartsIni.join('/');
+        
+        
+		const originalDateFinal = document.getElementById('dataFinal').value;
+
+        // Split the original date into an array [yyyy, mm, dd]
+        const partsFinal = originalDateFinal.split('-');
+
+        // Rearrange the array to [dd, mm, yyyy]
+        const rearrangedPartsFinal = [partsFinal[2], partsFinal[1], partsFinal[0]];
+
+        // Join the array into a string with "/" as separator
+        const formattedDateFinal = rearrangedPartsFinal.join('/');
+		
+		
+		
+		
+        // Get the form data
+        var nomeEvento     = document.getElementById('nomeEvento').value;
+        var dataInicial    = document.getElementById('dataInicial').value = formattedDateIni;
+        var dataFinal      = document.getElementById('dataFinal').value = formattedDateFinal;
+        var capacidade     = document.getElementById('capacidade').value;
+        var agenciaModel     = document.getElementById('agenciaModel').value;
+        var membroModel      = document.getElementById('membroModel').value;
+        
+        // You can perform validation here before sending the data
+
+        // Create an object to store the form data
+      
+        var formCadEvento = {
+           // agenciaModel: agenciaModel,
+                     nomeEvento: nomeEvento,
+                    dataInicial: dataInicial,
+                      dataFinal: dataFinal,
+                     capacidade: capacidade,
+                     agenciaModel  : { idAgencia:agenciaModel},
+                     membroModel   : { idMembro:membroModel}
+        };
+
+        // You can send the data to a server using AJAX or fetch
+        // For example, using the fetch API:
+        fetch('http://localhost:8092/eventos', {
+            method: 'POST',
+            body: JSON.stringify(formCadEvento),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+            
+        })
+        .then(response => {
+            // Handle the server response
+            if (response.status === 201) {
+                // Successful submission
+                console.log('Form submitted successfully');
+                document.getElementById("CadastroEvento").reset();
+                alert("Cadastro realizado com sucesso");
+            } else {
+                // Handle the error
+                console.error('Form submission failed');
+                alert("Atenção: Informe o Nome do Evento ");
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+          
+    });
+    
+    function validateForm(){
+ 	 const isValid = CadastroEvento.checkValidity();
+  	if(!isValid){
+    alert("Por favor, verificar todos os campos");
+  }
+  return isValid;
+}
+    
+  
+</script>
+</body>
+</html>

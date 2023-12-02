@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+    <title>Agendamento</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="bootstrap.min.css">
+
+</head>
+<body>
+<style>
+
+ .titulo {
+      width: 80%;
+      margin: 0 auto;
+     text-align: center;
+      padding: 20px;
+      color:black;
+      background-color: rgba(255, 255, 255, 0.8); /* Example: Semi-transparent white background */
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Example: Box shadow for container */
+      
+    }
+ .container {
+	 top:80 ;
+      width: 80%;
+      color:black;
+      margin: 0 auto;
+      padding: 20px;
+    
+      background-color: rgba(255, 255, 255, 0.8); /* Example: Semi-transparent white background */
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Example: Box shadow for container */
+      
+    }
+      body {
+      margin: 0;
+      padding: 0;
+      background-image: url('https://tinyurl.com/ywr46fj5');
+      background-size: cover; /* This will cover the entire background */
+      color: #ffffff; /* Set text color to be visible on the background */
+      
+    }
+
+nav {
+  background-color: #333;
+ 
+}
+
+
+.navbar {
+  overflow: hidden;
+  background-color: #333;
+  position: fixed; /* Set the navbar to fixed position */
+  top: 0; /* Position the navbar at the top of the page */
+  width: 100%; /* Full width */
+  
+}
+
+.menu {
+  list-style: none;
+  padding: 0;
+}
+
+.menu li {
+  display: inline-block;
+  position: relative;
+}
+
+.menu a {
+  display: block;
+  padding: 15px 20px;
+  text-decoration: none;
+  color: #fff;
+}
+
+.menu li:hover {
+  background-color: #555;
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  background-color: #333;
+}
+
+.dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+.dropdown-menu li {
+  display: block;
+}
+
+.dropdown-menu a {
+  padding: 10px 20px;
+}
+
+.dropdown-menu li:hover {
+  background-color: #555;
+}
+
+</style>
+<nav  >
+    <ul class="menu">
+
+
+        <li><a href="/">Home</a></li>
+
+
+        <li class="dropdown">
+            <a href="#">Cadastros</a>
+            <ul class="dropdown-menu">
+                <li><a href="/cadastro-agencia">Agencias</a></li>
+                <li><a href="/cadastro-membro">Membros</a></li>
+                <li><a href="/cadastro-evento">Eventos</a></li>
+            </ul>
+        </li>
+
+        <li class="dropdown"><a href="#">Consultas</a>
+            <ul class="dropdown-menu">
+                  <li><a href="/consulta-agencia">Agencias</a></li>
+                  <li><a href="/consulta-membro">Membros</a></li>
+                  <li><a href="/consulta-evento">Eventos</a></li>
+            </ul>
+        </li>
+
+
+
+        <li class="dropdown"><a href="#">Agendamentos</a>
+            <ul class="dropdown-menu">
+                <li><a href="/cadastro-agendamento">Solicitação de Agendamento</a></li>
+                <li><a href="/consulta-agendamento">Ver Agendamentos</a></li>
+            </ul>
+        </li>
+
+		<script> 
+		var usuario = localStorage.getItem("usuario");
+		console.log(usuario);
+		</script>
+
+        <li><a href="/login">Sair</a></li>
+    </ul>
+</nav>  
+  
+
+<h1 class="titulo">Solicitação de Agendamento</h1>
+
+<form class="container" id="CadastroAgendamento">
+
+	
+	<label for="solicitanteEventos">Solicitante Evento:</label><br>
+    <select class="form-control form-control-sm" id="solicitanteEventos">
+        <option value=""  disable selected>selecione uma opçao</option>
+    </select><br>
+    
+    
+	<label for="agenciaEventos">Agencia Eventos:</label><br>
+    <select class="form-control form-control-sm" id="agenciaEventos">
+    <option value=""  disable selected>selecione uma opçao</option>
+    </select><br>
+	
+	
+	<label for="evento">Evento:</label><br>
+    <select class="form-control form-control-sm" id="evento">
+    <option value=""  disable selected>selecione uma opçao</option>
+    </select><br>
+	
+	<label for="solicitadoMusica">Produtor Musical:</label><br>
+    <select class="form-control form-control-sm"  id="solicitadoMusica">
+        <option value=""  disable selected>selecione uma opçao</option>
+    </select><br>
+
+
+    <label for="dataAgendamento">Data:</label><br>
+    <input class="form-control form-control-sm" type="date" id="dataAgendamento" name="dataAgendamento"    required><br>
+
+	
+    
+   
+<script>
+	var usuario = localStorage.getItem("usuario");
+	console.log(usuario);
+ // URL da API JSONPlaceholder para obter a lista de usuários
+    const apiUrlSolicitante = 'http://localhost:8092/membros';
+
+    // Fetch API para obter a lista de usuários
+    fetch(apiUrlSolicitante)
+        .then(response => response.json())
+        .then(users => {
+            	const     listaSolicitante  = document.getElementById('solicitanteEventos');
+              
+                 
+            users.forEach(user => {
+                  const  option =document.createElement('option');
+                  option.value=user.idMembro;
+                  option.text=user.nome;
+                  listaSolicitante.add(option,null)
+               
+            });
+        })
+        .catch(error => {
+            console.error('Erro ao buscar dados da API:', error);
+            
+       });
+
+
+ // URL da API JSONPlaceholder para obter a lista de usuários
+    const apiUrlSolicitado = 'http://localhost:8092/membros';
+
+      // Fetch API para obter a lista de usuários
+    fetch(apiUrlSolicitado)
+        .then(response => response.json())
+        .then(users => {
+            	const     listaSolicitado  = document.getElementById('solicitadoMusica');
+
+
+            users.forEach(user => {
+                  const  option =document.createElement('option');
+                  option.value=user.idMembro;
+                  option.text=user.nome;
+                  listaSolicitado.add(option,null)
+
+            });
+        })
+        .catch(error => {
+            console.error('Erro ao buscar dados da API:', error);
+
+       });
+       
+       
+       
+       
+ // URL da API JSONPlaceholder para obter a lista de usuários
+    const apiUrlAgencia = 'http://localhost:8092/agencias';
+
+      // Fetch API para obter a lista de usuários
+    fetch(apiUrlAgencia)
+        .then(response => response.json())
+        .then(users => {
+            	const     Agencia  = document.getElementById('agenciaEventos');
+
+
+            users.forEach(user => {
+                  const  option =document.createElement('option');
+                  option.value=user.idAgencia;
+                  option.text=user.nomeFantasia;
+                  Agencia.add(option,null)
+
+            });
+        })
+        .catch(error => {
+            console.error('Erro ao buscar dados da API:', error);
+
+       });
+
+
+ // URL da API JSONPlaceholder para obter a lista de usuários
+    const apiUrlEvento = 'http://localhost:8092/eventos';
+
+      // Fetch API para obter a lista de usuários
+    fetch(apiUrlEvento)
+        .then(response => response.json())
+        .then(users => {
+            	const     evento  = document.getElementById('evento');
+
+
+            users.forEach(user => {
+                  const  option =document.createElement('option');
+                  option.value=user.idEvento;
+                  option.text=user.nomeEvento;
+                  evento.add(option,null)
+
+            });
+        })
+        .catch(error => {
+            console.error('Erro ao buscar dados da API:', error);
+
+       });
+
+
+</script>
+
+    <br><br><input  onclick="validateForm()" class="btn btn-dark" type="submit" value="Cadastrar">
+ 
+    
+</form>
+<script>
+   	
+   	
+   	
+	  
+	 document.getElementById('CadastroAgendamento').addEventListener('submit', function (e) {
+        e.preventDefault(); // Prevent the default form submission
+		
+		
+		const originalDate = document.getElementById('dataAgendamento').value;
+
+        // Split the original date into an array [yyyy, mm, dd]
+        const parts = originalDate.split('-');
+
+        // Rearrange the array to [dd, mm, yyyy]
+        const rearrangedParts = [parts[2], parts[1], parts[0]];
+
+        // Join the array into a string with "/" as separator
+        const formattedDate = rearrangedParts.join('/');
+        
+     
+		
+		
+		
+        // Get the form data
+        var solicitanteEventos     = document.getElementById('solicitanteEventos').value;
+        var agenciaEventos     = document.getElementById('agenciaEventos').value;
+        var evento     = document.getElementById('evento').value;
+        var solicitadoMusica     = document.getElementById('solicitadoMusica').value;
+        var dataAgendamento    = document.getElementById('dataAgendamento').value = formattedDate;
+       
+        
+        
+        
+        // You can perform validation here before sending the data
+
+        // Create an object to store the form data
+      
+        var formCadAgendamento = {
+           // agenciaModel: agenciaModel,
+                 solicitanteEventos: { idMembro:solicitanteEventos},
+                     agenciaEventos: { idAgencia:agenciaEventos},
+                             evento: { idEvento:evento},
+                   solicitadoMusica: { idMembro:solicitadoMusica},
+                 dataAgendamento   : dataAgendamento
+        };
+
+        // You can send the data to a server using AJAX or fetch
+        // For example, using the fetch API:
+        fetch('http://localhost:8092/agendamentos', {
+            method: 'POST',
+            body: JSON.stringify(formCadAgendamento),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+            
+        })
+        .then(response => {
+            // Handle the server response
+            if (response.status === 201) {
+                // Successful submission
+                console.log('Form submitted successfully');
+                document.getElementById("CadastroAgendamento").reset();
+                alert("Agendamento solicitado com sucesso");
+            } else {
+                // Handle the error
+                console.error('Form submission failed');
+                alert("Atenção: verifique a data");
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+          
+    });
+    
+    function validateForm(){
+ 	 const isValid = CadastroAgendamento.checkValidity();
+  	if(!isValid){
+    alert("Por favor, verificar todos os campos");
+  }
+  return isValid;
+}
+    
+  
+</script>
+</body>
+</html>
